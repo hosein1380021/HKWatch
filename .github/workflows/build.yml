@@ -1,0 +1,32 @@
+name: Build unsigned iOS app
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build unsigned app
+        run: xcodebuild -project HKWatch.xcodeproj -scheme HKWatch -configuration Release -sdk iphoneos -derivedDataPath output CODE_SIGNING_ALLOWED=NO build
+
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p Payload
+          cp -R output/Build/Products/Release-iphoneos/HKWatch.app Payload/
+          zip -qr HKWatch-unsigned.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: HKWatch-unsigned
+          path: HKWatch-unsigned.ipa
