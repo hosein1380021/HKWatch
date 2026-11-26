@@ -1,0 +1,15 @@
+name: HKWatch
+options:
+  deploymentTarget:
+    iOS: '16.0'
+targets:
+  HKWatch:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.HKWatch
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription: برای پیدا کردن و اتصال به ساعت به بلوتوث نیاز است.
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
